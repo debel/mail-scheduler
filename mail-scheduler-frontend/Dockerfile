@@ -1,15 +1,13 @@
-FROM node@lts
+FROM node:lts
 
-WORKDIR = /app
+WORKDIR /app
 
 COPY package.json /app
 COPY package-lock.json /app
 
-COPY src /app
-COPY public /app
+RUN npm install
 
-CMD ["npm", "install"]
+COPY src /app/src
+COPY public /app/public
 
-CMD ["npm", "run", "build"]
-
-ENTRYPOINT ["npm", "run", "start"]
+CMD ["npm", "run", "start"]
