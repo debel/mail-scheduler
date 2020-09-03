@@ -10,6 +10,10 @@ module.exports = async function connect() {
   try {
     const cli = await mongodb.connect(config.mongoUrl, { useUnifiedTopology: true });
     client = cli;
+
+    //TODO:: schedule close with debounce
+    // close the connection after n seconds, but extend timeframe if more requests 
+
     return client;
   } catch (err) {
     client = null;

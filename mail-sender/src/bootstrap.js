@@ -1,3 +1,4 @@
+const moment = require('moment');
 const mongodb = require('mongodb').MongoClient;
 const cronParser = require('cron-parser');
 
@@ -17,6 +18,7 @@ mongodb.connect(dbUrl, (err, client) => {
   const every_day_at_five_thirty = '30 17 * * *';
   const monday_morning_at_nine = '0 9 * * 1';
 
+  const last = new Date();
   const sampleMails = [
     {
       from: 'zdravko@test.com',
@@ -24,8 +26,17 @@ mongodb.connect(dbUrl, (err, client) => {
       subject: 'bla bla bla',
       body: 'lorem ipsum',
       cron: every_minute,
-      next: cronParser.parseExpression(every_minute).next().toISOString(),
-      status: 'pending',
+      next: cronParser.parseExpression(every_minute).next().toDate(),
+      last,
+    },
+    {
+      from: 'boro@test.com',
+      to: 'voro@test.com',
+      subject: 'koro',
+      body: '4a 4a 4a',
+      cron: every_minute,
+      next: cronParser.parseExpression(every_minute).next().toDate(),
+      last,
     },
     {
       from: 'pesho@test.com',
@@ -33,8 +44,8 @@ mongodb.connect(dbUrl, (err, client) => {
       subject: 'bla bla bla',
       body: 'lorem ipsum',
       cron: every_five_minutes,
-      next: cronParser.parseExpression(every_five_minutes).next().toISOString(),
-      status: 'pending',
+      next: cronParser.parseExpression(every_five_minutes).next().toDate(),
+      last,
     },
     {
       from: 'gosho@test.com',
@@ -42,8 +53,8 @@ mongodb.connect(dbUrl, (err, client) => {
       subject: '1 2 3',
       body: 'lorem ipsum',
       cron: every_day_at_five_thirty,
-      next: cronParser.parseExpression(every_day_at_five_thirty).next().toISOString(),
-      status: 'pending',
+      next: cronParser.parseExpression(every_day_at_five_thirty).next().toDate(),
+      last,
     },
     {
       from: 'tosho@test.com',
@@ -51,8 +62,8 @@ mongodb.connect(dbUrl, (err, client) => {
       subject: 'a b c',
       body: 'lorem ipsum',
       cron: monday_morning_at_nine,
-      next: cronParser.parseExpression(monday_morning_at_nine).next().toISOString(),
-      status: 'pending',
+      next: cronParser.parseExpression(monday_morning_at_nine).next().toDate(),
+      last,
     }
   ];
 
