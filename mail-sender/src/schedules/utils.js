@@ -2,11 +2,22 @@ const moment = require('moment');
 const cronParser = require('cron-parser');
 
 function markAs(schedule, status, node, requestedSendTime) {
-  const actualTime = moment().toISOString();
+  const currentTime = moment().toISOString();
   const id = schedule._id.toString();
-  schedule.status = status;
-  schedule.node = node;
-  console.log({ id, status, requestedSendTime, actualTime, node, cron: schedule.cron });
+  const logMessage = {
+    id,
+    currentTime,
+    requestedSendTime,
+    status,
+    node,
+    cron: schedule.cron,
+  };
+
+  if (schedule.endAfter) {
+    logMessage.endAfter = schedule.endAfter;
+  }
+
+  console.log(logMessage);
 }
 
 function reduceRemainingRuns(schedule) {

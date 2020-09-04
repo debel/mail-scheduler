@@ -1,13 +1,21 @@
-const delay = ms => new Promise(r => setTimeout(r, ms));
+const { domain, apiKey } = require('../../config/secrets');
+const mailgun = require('mailgun-js')({ domain, apiKey });
 
-async function sendMail() {
-  const rand = Math.random() * 2000;
-  
-  await delay(rand);
+async function sendMail(schedule) {
+  return new Promise((resolve, reject) => {
+    const data = {
+      from: schedule.from,
+      to: schedule.to,
+      subject: schedule.subject,
+      text: schedule.body,
+    };
 
-  if (rand > 1500) {
-    throw new Error('mail didnt send');
-  }
+    mailgun.messages().send(data, (error, body) => {
+      if (error) { return reject(error); }
+      
+      resolve(body);
+    });
+  });
 }
 
 module.exports = sendMail;

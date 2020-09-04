@@ -68,7 +68,7 @@ async function sendNextMail(schedule, retryDelay = 1000, retriesLeft = 3) {
 
     try {
       markAs(schedule, 'sending', nodeId, sendTimeStr);
-      const mailingServiceResponse = await sendMail();
+      const mailingServiceResponse = await sendMail(schedule);
       markAs(schedule, 'done', nodeId, sendTimeStr);
       return true;
     } catch (err) {
