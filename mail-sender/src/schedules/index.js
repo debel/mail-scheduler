@@ -2,6 +2,7 @@ const uuid = require('uuid').v4;
 const etcd = require('../services/etcd');
 const sendMail = require('../services/mailgun');
 const mailSchedule = require('./storage');
+const config = require('../../config');
 const {
   markAs,
   calculateNextSendTime,
@@ -13,9 +14,6 @@ const {
 const delay = ms => new Promise(r => setTimeout(r, ms));
 
 const nodeId = uuid();
-
-//TODO:: each failed lock adds to an db read offset i.e. don't get the first it's already being handled
-// let alreadyLocked = new Set();
 
 const _5_MIN = 5 * 60 * 1000;
 async function handleSchedule(schedule, retryDelay = 1000, retriesLeft = 3) {
@@ -47,7 +45,7 @@ async function handleSchedule(schedule, retryDelay = 1000, retriesLeft = 3) {
       throw new Error(`failed to send ${id} ${last}`);
     }
   }).catch(async err => {
-    console.error(`${3 - retriesLeft}/3`, err);
+    // console.error(`${3 - retriesLeft}/3`, err);
     if (retriesLeft > 0) {
       await delay(retryDelay);
       handleSchedule(schedule, retryDelay * 3, retriesLeft - 1);
@@ -81,12 +79,12 @@ async function sendNextMail(schedule, retryDelay = 1000, retriesLeft = 3) {
       else {
         return false;
       }
-    }  
+    }
 }
 
 async function scheduleUpdates(ms) {
   try {
-    const schedules = await mailSchedule.getNextBatch({ limit: 1, /* skip: alreadyLocked.size */ });
+    const schedules = await mailSchedule.getNextBatch({ limit: config.schedulesPerWorker });
     schedules.forEach(schedule => handleSchedule(schedule));
   } finally {
     await delay(ms);

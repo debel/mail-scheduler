@@ -13,7 +13,7 @@ Execute the following command to execute the entire solution with 3 instances of
 Front-end should be available at: http://localhost:3000
 
 
-Back-end should be available at: http://localhost:5000
+Back-end should be available at: http://localhost:5000/schedules
 
 ## Overview of solution
 
@@ -23,6 +23,8 @@ The back-end is a Node.js application using `express`.
 
 The core of the design is the `mail-sender` application. It can be scaled horizontally (running many instances in parallel) 
 using `etcd` distributed locks to ensure that each e-mail is sent out only once.
+
+You can control how many jobs each worker tries to pick up by modifying the `schedulesPerWorker` variable in the `./mail-sender/config/docker.js` config file.
 
 ## Possible improvements
 Many things can be improved
