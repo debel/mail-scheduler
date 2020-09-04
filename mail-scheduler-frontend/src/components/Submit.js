@@ -9,12 +9,12 @@ function sendToServer(state) {
     body: JSON.stringify(state)
   };
 
-  return fetch(config.serverUrl, options)
+  return fetch(`${config.serverUrl}/schedules`, options)
     .then(console.log, console.error);
 }
 
 export default function Submit() {
-  const { state } = useContext(FormContext);
+  const { state, dispatch } = useContext(FormContext);
 
-  return <button onClick={(e) => { e.preventDefault(); sendToServer(state); }}>Submit</button>
+  return <button onClick={(e) => { e.preventDefault(); sendToServer(state).then(() => dispatch(['reset'])) }}>Submit</button>
 }

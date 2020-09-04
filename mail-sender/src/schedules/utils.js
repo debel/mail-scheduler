@@ -9,8 +9,32 @@ function markAs(schedule, status, node, requestedSendTime) {
   console.log({ id, status, requestedSendTime, actualTime, node, cron: schedule.cron });
 }
 
+function reduceRemainingRuns(schedule) {
+  if (schedule.endAfter) {
+    schedule.endAfter -= 1;
+    return schedule.endAfter;
+  }
+}
+
+function scheduleHasExpired(schedule) {
+  if (schedule.endAfter === 0) {
+    return true;
+  }
+
+  if (schedule.endOn) {
+    const endOnDate = moment(schedule.endOn);
+    const today = moment();
+    if (endOnDate.isSame(today) === true) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function calculateNextSendTime(schedule) {
   const nextTimeGenerator = cronParser.parseExpression(schedule.cron);
+
   let nextSendTime;
   do {
     nextSendTime = nextTimeGenerator.next()
@@ -32,6 +56,8 @@ function calculateTimeToWait(schedule) {
 
 module.exports = {
   markAs,
+  scheduleHasExpired,
   calculateNextSendTime,
   calculateTimeToWait,
+  reduceRemainingRuns,
 };

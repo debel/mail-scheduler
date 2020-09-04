@@ -1,5 +1,11 @@
 version: '3.0'
 services:
+  backend:
+    build: './mail-scheduler-backend'
+    environment:
+      - NODE_ENV=docker
+    ports:
+      - '5000:5000'
   frontend:
     build: './mail-scheduler-frontend'
     environment:
@@ -7,7 +13,8 @@ services:
     ports:
       - '3000:3000'
     tty: true
-  # backend:
+    depends_on:
+      - backend
   sender:
     build: './mail-sender'
     environment:

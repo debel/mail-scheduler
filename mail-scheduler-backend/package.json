@@ -2,13 +2,19 @@
   "name": "mail-scheduler-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
+    "start": "node ./src/index.js",
+    "debug": "node --inspect-brk src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mihail Mikov",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "cron-parser": "^2.16.3",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.1"
   }
 }

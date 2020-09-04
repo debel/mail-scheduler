@@ -10,8 +10,8 @@ mongodb.connect(dbUrl, (err, client) => {
     process.exit(1);
   }
 
-  const db = client.db('mails');
-  const collection = db.collection('mails');
+  const db = client.db('schedules');
+  const collection = db.collection('schedules');
   
   const every_minute = '* * * * *';
   const every_five_minutes = '*/5 * * * *';
@@ -28,6 +28,7 @@ mongodb.connect(dbUrl, (err, client) => {
       cron: every_minute,
       next: cronParser.parseExpression(every_minute).next().toDate(),
       last,
+      endAfter: 5,
     },
     {
       from: 'boro@test.com',
@@ -37,6 +38,7 @@ mongodb.connect(dbUrl, (err, client) => {
       cron: every_minute,
       next: cronParser.parseExpression(every_minute).next().toDate(),
       last,
+      endAfter: 3,
     },
     {
       from: 'pesho@test.com',

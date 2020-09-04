@@ -12,8 +12,8 @@ function RadioGroup({ name, children }) {
   return (
     <>
       {children.map(c =>
-        <div>
-          <label key={c.props.radioValue}>
+        <div key={c.props.radioValue}>
+          <label>
             <input
               name={name}
               type="radio"
