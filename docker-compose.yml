@@ -22,12 +22,19 @@ services:
     depends_on:
       - mongodb
       - etcd
+      - redis
   mongodb:
     image: mongo
     ports:
       - '27017:27017'
     volumes:
       - './common/mongodata:/mongodata'
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - './common/redis-data:/var/lib/redis'
   etcd:
     image: quay.io/coreos/etcd
     ports:

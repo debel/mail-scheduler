@@ -26,6 +26,8 @@ using `etcd` distributed locks to ensure that each e-mail is sent out only once.
 
 You can control how many jobs each worker tries to pick up by modifying the `schedulesPerWorker` variable in the `./mail-sender/config/docker.js` config file.
 
+I've not implemented the reporting functionality, but tracking the number of opened emails should be done using the mailgun webhooks api.
+
 ## Possible improvements
 Many things can be improved
 - Add styles to front-end
@@ -61,3 +63,7 @@ Many things can be improved
 
 - Integrated with mailgun
 - Implemented schedule expiration
+
+### 08.09.2020
+
+- Added a redis based fence to prevent double sending when the distributed locks fail
